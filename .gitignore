@@ -22,3 +22,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# Apple stuff
+.DS_Store
+
+# IntelliJ IDEA
+*.iml
+.idea
