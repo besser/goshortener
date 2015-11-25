@@ -9,9 +9,9 @@ import (
 //region TYPES
 
 type Url struct {
-	Id 				string
-	CreationDate 	time.Time
-	Destination		string
+	Id              string
+	CreationDate    time.Time
+	Destination     string
 }
 
 type Repository interface {
