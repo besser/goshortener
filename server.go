@@ -13,7 +13,7 @@ import (
 
 type Headers map[string]string
 
-//endregion TYPES
+//endregion
 
 //region CONST AND VARS
 
@@ -22,7 +22,7 @@ var (
 	urlBase string
 )
 
-//endregion CONST AND VARS
+//endregion
 
 //region MAIN FUNCTIONS
 
@@ -32,13 +32,15 @@ func init() {
 }
 
 func main() {
+	url.ConfigRepository(url.NewRepoMem())
+
 	http.HandleFunc("/api/shorten", Shortener)
 	http.HandleFunc("/r/", Redirector)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
 
-//endregion MAIN FUNCTIONS
+//endregion
 
 //region PUBLIC FUNCIONS
 
@@ -77,7 +79,7 @@ func Shortener(w http.ResponseWriter, r *http.Request) {
 	answerWith(w, status, Headers{"Location":shortUrl})
 }
 
-//endregion PUBLIC FUNCIONS
+//endregion
 
 //region PRIVATE FUNCIONS
 
@@ -95,4 +97,4 @@ func extractUrl(r *http.Request) string	{
 	return string(url)
 }
 
-//endregion PRIVATE FUNCIONS
+//endregion

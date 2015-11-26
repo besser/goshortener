@@ -21,7 +21,7 @@ type Repository interface {
 	Save(url Url) error
 }
 
-//endregion TYPES
+//endregion
 
 //region CONST AND VARS
 
@@ -32,7 +32,7 @@ const (
 
 var repo Repository
 
-//endregion CONST AND VARS
+//endregion
 
 //region MAIN FUNCTIONS
 
@@ -40,7 +40,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-//endregion MAIN FUNCTIONS
+//endregion
 
 //region PUBLIC FUNCIONS
 
@@ -67,7 +67,7 @@ func GetUrl(destiny string) (u *Url, new bool, err error) {
 	return &url, true, nil
 }
 
-//endregion PUBLIC FUNCIONS
+//endregion
 
 //region PRIVATE FUNCIONS
 
@@ -89,4 +89,4 @@ func generateId() {
 	}
 }
 
-//endregion PRIVATE FUNCIONS
+//endregion
