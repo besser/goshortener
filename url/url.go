@@ -71,7 +71,7 @@ func GetUrl(destiny string) (u *Url, new bool, err error) {
 
 //region PRIVATE FUNCIONS
 
-func generateId() {
+func generateId() string {
 	newId := func() string {
 		id := make([]byte, size)
 
