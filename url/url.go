@@ -8,16 +8,27 @@ import (
 
 //region TYPES
 
-type Url struct {
-	Id              string
-	CreationDate    time.Time
-	Destination     string
+type Stats struct {
+    Url     *Url    `json:"url"`
+    Clicks  int     `json:"clicks"`
 }
 
+type Url struct {
+	Id           string     `json:"id"`
+	CreationDate time.Time  `json:"creationDate"`
+	Destination  string     `json:"destination"`
+}
+
+//endregion
+
+//region INTERFACES
+
 type Repository interface {
-	IdExists(id string) bool
+    GetClicks(id string) int
 	FindById(id string) *Url
 	FindByUrl(url string) *Url
+	IdExists(id string) bool
+	RegisterClick(id string)
 	Save(url Url) error
 }
 
@@ -34,10 +45,19 @@ var repo Repository
 
 //endregion
 
-//region MAIN FUNCTIONS
+//region INIT
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
+}
+
+//endregion
+
+//region PUBLIC METHODS
+
+func (u *Url) Stats() *Stats {
+    clicks := repo.GetClicks(u.Id)
+    return &Stats{u, clicks}
 }
 
 //endregion
@@ -65,6 +85,10 @@ func GetUrl(destiny string) (u *Url, new bool, err error) {
 	repo.Save(url)
 
 	return &url, true, nil
+}
+
+func RegisterClick(id string) {
+    repo.RegisterClick(id)
 }
 
 //endregion
