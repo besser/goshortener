@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"strings"
 
+	"encoding/json"
+
 	"github.com/besser/goshortener/url"
-    "encoding/json"
 )
 
 //region TYPES
@@ -21,7 +22,7 @@ type Headers map[string]string
 var (
 	port    int
 	urlBase string
-    stats   chan string
+	stats   chan string
 )
 
 //endregion
@@ -34,14 +35,14 @@ func init() {
 }
 
 func main() {
-    stats = make(chan string)
-    defer close(stats)
-    go registerStatistics(stats)
+	stats = make(chan string)
+	defer close(stats)
+	go registerStatistics(stats)
 
 	url.ConfigRepository(url.NewRepoMem())
 
 	http.HandleFunc("/api/shorten", Shortener)
-    http.HandleFunc("/api/stats", Statistics)
+	http.HandleFunc("/api/stats/", Statistics)
 	http.HandleFunc("/r/", Redirector)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
@@ -58,8 +59,8 @@ func Redirector(w http.ResponseWriter, r *http.Request) {
 	if u := url.Find(id); u != nil {
 		http.Redirect(w, r, u.Destination, http.StatusMovedPermanently)
 
-        // Recordind statistics
-        stats <- id
+		// Recordind statistics
+		stats <- id
 	} else {
 		http.NotFound(w, r)
 	}
@@ -87,27 +88,27 @@ func Shortener(w http.ResponseWriter, r *http.Request) {
 
 	shortUrl := fmt.Sprintf("%s/r/%s", urlBase, url.Id)
 	respondWith(w, status, Headers{
-        "Location": shortUrl,
-        "Link": fmt.Sprintf("<%s/api/stats/%s>; rel=\"stats\"", urlBase, url.Id),
-    })
+		"Location": shortUrl,
+		"Link":     fmt.Sprintf("<%s/api/stats/%s>; rel=\"stats\"", urlBase, url.Id),
+	})
 }
 
 func Statistics(w http.ResponseWriter, r *http.Request) {
-    path := strings.Split(r.URL.Path, "/")
-    id := path[len(path)-1]
+	path := strings.Split(r.URL.Path, "/")
+	id := path[len(path)-1]
 
-    if u := url.Find(id); u != nil {
-        json, err := json.Marshal(u.Stats())
+	if u := url.Find(id); u != nil {
+		json, err := json.Marshal(u.Stats())
 
-        if err != nil {
-            w.WriteHeader(http.StatusInternalServerError)
-            return
-        }
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-        respondWithJSON(w, string(json))
-    } else {
-        http.NotFound(w, r)
-    }
+		respondWithJSON(w, string(json))
+	} else {
+		http.NotFound(w, r)
+	}
 }
 
 //endregion
@@ -123,10 +124,9 @@ func respondWith(w http.ResponseWriter, status int, headers Headers) {
 }
 
 func respondWithJSON(w http.ResponseWriter, reply string) {
-    respondWith(w, http.StatusOK, Headers{ "Content-Type": "application/json" })
-    fmt.Fprintf(w, reply)
+	respondWith(w, http.StatusOK, Headers{"Content-Type": "application/json"})
+	fmt.Fprintf(w, reply)
 }
-
 
 func extractUrl(r *http.Request) string {
 	url := make([]byte, r.ContentLength)
@@ -135,10 +135,10 @@ func extractUrl(r *http.Request) string {
 }
 
 func registerStatistics(ids <-chan string) {
-    for id := range ids {
-        url.RegisterClick(id)
-        fmt.Printf("Click successfully registered for %s.\n", id)
-    }
+	for id := range ids {
+		url.RegisterClick(id)
+		fmt.Printf("Click successfully registered for %s.\n", id)
+	}
 }
 
 //endregion
