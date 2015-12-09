@@ -9,10 +9,10 @@ type repositoryMemory struct {
 
 //endregion
 
-//region PUBLIC METHODS
+//region REPOSITORYMEMORY PUBLIC METHODS
 
-func (r *repositoryMemory) GetClicks(id string) int  {
-    return r.clicks[id]
+func (r *repositoryMemory) GetClicks(id string) int {
+	return r.clicks[id]
 }
 
 func (r *repositoryMemory) FindById(id string) *Url {
@@ -35,7 +35,7 @@ func (r *repositoryMemory) IdExists(id string) bool {
 }
 
 func (r *repositoryMemory) RegisterClick(id string) {
-    r.clicks[id] += 1
+	r.clicks[id] += 1
 }
 
 func (r *repositoryMemory) Save(url Url) error {

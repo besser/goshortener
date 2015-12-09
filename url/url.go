@@ -9,14 +9,14 @@ import (
 //region TYPES
 
 type Stats struct {
-    Url     *Url    `json:"url"`
-    Clicks  int     `json:"clicks"`
+	Url    *Url `json:"url"`
+	Clicks int  `json:"clicks"`
 }
 
 type Url struct {
-	Id           string     `json:"id"`
-	CreationDate time.Time  `json:"creationDate"`
-	Destination  string     `json:"destination"`
+	Id           string    `json:"id"`
+	CreationDate time.Time `json:"creationDate"`
+	Destination  string    `json:"destination"`
 }
 
 //endregion
@@ -24,7 +24,7 @@ type Url struct {
 //region INTERFACES
 
 type Repository interface {
-    GetClicks(id string) int
+	GetClicks(id string) int
 	FindById(id string) *Url
 	FindByUrl(url string) *Url
 	IdExists(id string) bool
@@ -56,8 +56,8 @@ func init() {
 //region PUBLIC METHODS
 
 func (u *Url) Stats() *Stats {
-    clicks := repo.GetClicks(u.Id)
-    return &Stats{u, clicks}
+	clicks := repo.GetClicks(u.Id)
+	return &Stats{u, clicks}
 }
 
 //endregion
@@ -88,7 +88,7 @@ func GetUrl(destiny string) (u *Url, new bool, err error) {
 }
 
 func RegisterClick(id string) {
-    repo.RegisterClick(id)
+	repo.RegisterClick(id)
 }
 
 //endregion

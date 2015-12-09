@@ -60,7 +60,7 @@ func main() {
 
 //endregion
 
-//region PUBLIC FUNCIONS
+//region REDIRECTOR PUBLIC METHODS
 
 func (red *Redirector) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	getUrlAndExecute(w, r, func(url *url.Url) {
@@ -68,6 +68,10 @@ func (red *Redirector) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		red.stats <- url.Id // Recordind statistics
 	})
 }
+
+//endregion
+
+//region HTTP HANDLERS
 
 func Shortener(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
