@@ -1,11 +1,11 @@
-greetings = "All your base are belong to us!"
+greetings = "All your base are belong to us!\n"
 
 [cpu]
 maxprocs = 0
 
 [database]
-mongo_db  = "heroku_gsm9ld6q"
-mongo_uri = "mongodb://heroku_gsm9ld6q:7k16iinck0l467nk4jea4tu71h@ds045795.mongolab.com:45795/heroku_gsm9ld6q"
+mongo_db  = ""
+mongo_uri = ""
 
 [server]
 port = "80"
