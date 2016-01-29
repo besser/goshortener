@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"flag"
@@ -43,7 +43,7 @@ func init() {
 	urlBase = fmt.Sprintf("http://localhost:%d", *port)
 }
 
-func main() {
+func Run() {
 	stats := make(chan string)
 	defer close(stats)
 	go registerStatistics(stats)
